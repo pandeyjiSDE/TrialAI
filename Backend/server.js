@@ -1,15 +1,24 @@
 // server.js
 require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
+// const cors = require('cors');
+const path = require('path');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Serve frontend build
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// SPA routing fallback (React Router)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 // Initialize the GenAI client with your API key
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);

@@ -15,9 +15,7 @@ function GenAIComponent() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:3001/api/generate", {
-        prompt,
-      });
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/generate`, { prompt });
       setGeneratedText(response.data.generatedText);
     } catch (err) {
       console.error("Frontend error:", err);
